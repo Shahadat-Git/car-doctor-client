@@ -1,14 +1,29 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import logo from '../../assets/logo.svg';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../providers/AuthProvider';
 
 const Header = () => {
+    const { user, logOut } = useContext(AuthContext);
+
+    const handleLogOut = () => {
+        logOut()
+            .then(() => {})
+            .catch((error) => console.log(error))
+    }
     const links = <>
         <li><Link to='/'>Home</Link></li>
         <li><Link to='/'>About</Link></li>
         <li><Link to='/'>Services</Link></li>
         <li><Link to='/'>Blog</Link></li>
         <li><Link to='/'>Contact</Link></li>
+        {
+            user ? <>
+                <li><Link to='/bookings'>My Bookings</Link></li>
+                <li><button onClick={handleLogOut}>LogOut</button></li>
+            </> :
+                <li><Link to='/login'>Log In</Link></li>
+        }
     </>
     return (
         <div className='w-[1140px] mx-auto'>
